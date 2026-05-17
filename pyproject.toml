@@ -1,0 +1,21 @@
+[project]
+name = "udl"
+version = "0.1.0"
+description = "Deep Learning review demos — from scratch to PyTorch"
+requires-python = ">=3.11"
+dependencies = [
+    "numpy",
+    "matplotlib",
+    "torch",
+]
+
+[tool.uv]
+# CPU-only torch to keep the install lightweight on machines without a GPU
+# Remove the index override below if you want CUDA wheels instead.
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cpu" }

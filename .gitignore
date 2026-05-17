@@ -1,0 +1,9 @@
+.venv/
+.uv-cache/
+.uv-requirements.txt
+.mplconfig/
+__pycache__/
+*.pyc
+
+# Runtime-generated demo artifacts
+demos/*.png
