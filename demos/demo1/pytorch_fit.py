@@ -1,15 +1,18 @@
 """
-demo1_pytorch.py — 用 PyTorch 拟合复合函数
+pytorch_fit.py — 用 PyTorch 拟合复合函数
 
-目标函数 F(x) 与 demo1_numpy.py 完全相同，区别在于:
+目标函数 F(x) 与 numpy_fit.py 完全相同，区别在于:
   - 使用 torch.nn.Sequential 构建网络
   - 自动微分取代手动反向传播
   - Adam 优化器（比 SGD+Momentum 收敛通常更稳定）
   - 与 numpy 版输出同样风格的可视化，方便对照
 
 运行方式:
-    uv run python demos/demo1_pytorch.py
+    uv run python demos/demo1/pytorch_fit.py
 """
+
+from pathlib import Path
+import sys
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -18,6 +21,14 @@ import matplotlib.gridspec as gridspec
 import torch
 import torch.nn as nn
 from torch.utils.data import TensorDataset, DataLoader
+
+
+CURRENT_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = CURRENT_DIR.parents[1]
+COMMON_DIR = PROJECT_ROOT / "demos" / "common"
+ARTIFACTS_DIR = CURRENT_DIR / "artifacts"
+if str(COMMON_DIR) not in sys.path:
+    sys.path.insert(0, str(COMMON_DIR))
 
 from mpl_font_utils import configure_chinese_font
 
@@ -47,7 +58,7 @@ LOG_EVERY  = 100
 # ─────────────────────────────────────────────
 
 def make_target_function(seed=SEED):
-    """随机生成参数并返回 (params, F)，逻辑见 demo1_numpy.py"""
+    """随机生成参数并返回 (params, F)，逻辑见 numpy_fit.py"""
     rng = np.random.default_rng(seed)
     lo, hi = -1.0, 1.0
     params = {
@@ -246,8 +257,10 @@ def plot_results(F, x_train, y_train, x_test, y_test,
                  fontsize=8, color='green',
                  arrowprops=dict(arrowstyle='->', color='green', lw=1.2))
 
-    plt.savefig("demos/demo1_pytorch_result.png", dpi=150, bbox_inches='tight')
-    print("图像已保存至 demos/demo1_pytorch_result.png")
+    ARTIFACTS_DIR.mkdir(parents=True, exist_ok=True)
+    output_path = ARTIFACTS_DIR / "pytorch_fit_result.png"
+    plt.savefig(output_path, dpi=150, bbox_inches='tight')
+    print(f"图像已保存至 {output_path}")
     plt.show()
 
 

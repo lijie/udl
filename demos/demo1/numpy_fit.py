@@ -1,5 +1,5 @@
 """
-demo1_numpy.py — 用纯 NumPy 手写神经网络拟合复合函数
+numpy_fit.py — 用纯 NumPy 手写神经网络拟合复合函数
 
 目标函数 F(x):
     F(x) = beta3 + omega3 * cos(
@@ -17,12 +17,23 @@ demo1_numpy.py — 用纯 NumPy 手写神经网络拟合复合函数
   - 训练/测试数据可视化
 
 运行方式:
-    uv run python demos/demo1_numpy.py
+    uv run python demos/demo1/numpy_fit.py
 """
+
+from pathlib import Path
+import sys
 
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
+
+
+CURRENT_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = CURRENT_DIR.parents[1]
+COMMON_DIR = PROJECT_ROOT / "demos" / "common"
+ARTIFACTS_DIR = CURRENT_DIR / "artifacts"
+if str(COMMON_DIR) not in sys.path:
+    sys.path.insert(0, str(COMMON_DIR))
 
 from mpl_font_utils import configure_chinese_font
 
@@ -355,8 +366,10 @@ def plot_results(F, x_train, y_train, x_test, y_test,
                  fontsize=8, color='green',
                  arrowprops=dict(arrowstyle='->', color='green', lw=1.2))
 
-    plt.savefig("demos/demo1_numpy_result.png", dpi=150, bbox_inches='tight')
-    print("图像已保存至 demos/demo1_numpy_result.png")
+    ARTIFACTS_DIR.mkdir(parents=True, exist_ok=True)
+    output_path = ARTIFACTS_DIR / "numpy_fit_result.png"
+    plt.savefig(output_path, dpi=150, bbox_inches='tight')
+    print(f"图像已保存至 {output_path}")
     plt.show()
 
 
